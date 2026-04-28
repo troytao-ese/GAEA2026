@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAEA 2026 — Track A: Green AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --ink:        #0f1f14;
+    --forest:     #1c3828;
+    --mid:        #2e5c42;
+    --leaf:       #4a9160;
+    --sage:       #7ab893;
+    --gold:       #c8a96e;
+    --gold-lt:    #e8d5a8;
+    --cream:      #f8f5ee;
+    --paper:      #ffffff;
+    --border:     #dcd7cc;
+    --muted:      #6b7163;
+    --chip-bg:    #eef5f1;
+    --chip-text:  #2e5c42;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  /* ─── TOP BAR ─── */
+  .topbar {
+    background: var(--ink);
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    padding: 9px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .topbar strong { color: var(--gold); }
+  .topbar a { color: var(--sage); text-decoration: none; }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--forest);
+    position: relative;
+    overflow: hidden;
+    padding: 72px 56px 64px;
+  }
+
+  /* Circuit-board texture suggestion via SVG background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(74,145,96,0.06) 0px, rgba(74,145,96,0.06) 1px, transparent 1px, transparent 60px),
+      repeating-linear-gradient(90deg, rgba(74,145,96,0.06) 0px, rgba(74,145,96,0.06) 1px, transparent 1px, transparent 60px);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,169,110,0.12) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200,169,110,0.15);
+    border: 1px solid rgba(200,169,110,0.4);
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    margin-bottom: 26px;
+  }
+
+  .pill-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.08;
+    color: white;
+    max-width: 680px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  .hero-name-block {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 36px;
+    max-width: 560px;
+    line-height: 1.5;
+  }
+
+  .hero-meta-row {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 28px;
+    margin-top: 4px;
+  }
+
+  .hm {
+    padding: 0 36px 0 0;
+    margin-right: 36px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .hm:last-child { border-right: none; margin-right: 0; }
+
+  .hm-label {
+    font-size: 9.5px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5px;
+  }
+  .hm-value {
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.88);
+    font-weight: 400;
+  }
+
+  /* ─── LAYOUT ─── */
+  .wrapper {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 64px 40px;
+  }
+
+  /* ─── SECTION ─── */
+  .section { margin-bottom: 60px; }
+
+  .section-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--forest);
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section p {
+    color: #383830;
+    margin-bottom: 14px;
+    max-width: 760px;
+  }
+
+  /* ─── PULL QUOTE ─── */
+  .pull-quote {
+    border-left: 4px solid var(--gold);
+    padding: 22px 30px;
+    background: var(--paper);
+    margin: 24px 0;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+  .pull-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--forest);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ─── STAT ROW ─── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+  }
+
+  .stat-card {
+    background: var(--forest);
+    color: white;
+    padding: 22px 24px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+  }
+
+  /* ─── AGENDA BLOCK ─── */
+  .agenda-block {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .agenda-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+  }
+  .agenda-row:last-child { border-bottom: none; }
+
+  .agenda-time {
+    background: var(--chip-bg);
+    padding: 16px 20px;
+    min-width: 130px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--mid);
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .agenda-item {
+    padding: 16px 22px;
+    font-size: 13.5px;
+    color: #383830;
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  .agenda-item strong {
+    color: var(--forest);
+  }
+
+  /* ─── TOPICS GRID ─── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .topic-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .topic-card:hover { border-color: var(--leaf); }
+
+  .topic-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--chip-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .topic-icon svg {
+    width: 13px;
+    height: 13px;
+    stroke: var(--leaf);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .topic-text {
+    font-size: 13px;
+    color: #3a3a32;
+    line-height: 1.55;
+  }
+
+  /* ─── SPEAKER SECTION ─── */
+  .speaker-filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0 20px;
+  }
+
+  .s-chip {
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--paper);
+  }
+
+  .s-chip.active {
+    background: var(--forest);
+    color: white;
+    border-color: var(--forest);
+  }
+
+  /* Keynote speakers */
+  .keynotes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .k-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .k-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--leaf);
+  }
+
+  .k-card.gold::before { background: var(--gold); }
+
+  .k-role {
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--leaf);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .k-card.gold .k-role { color: var(--gold); }
+
+  .k-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--forest);
+    margin-bottom: 5px;
+    line-height: 1.2;
+  }
+
+  .k-affil {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .k-topic {
+    font-size: 12.5px;
+    color: #3a3a32;
+    font-style: italic;
+    line-height: 1.5;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* Oral Presenters */
+  .oral-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .oral-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .oral-initials {
+    width: 38px;
+    height: 38px;
+    background: var(--chip-bg);
+    color: var(--mid);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .oral-info .o-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--forest);
+    margin-bottom: 2px;
+  }
+
+  .oral-info .o-affil {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .oral-info .o-topic {
+    font-size: 11.5px;
+    color: #5a5a4e;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ─── OUTCOMES ─── */
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .outcome-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 24px 22px;
+  }
+
+  .outcome-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .outcome-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--forest);
+    margin-bottom: 8px;
+  }
+
+  .outcome-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ─── INFO BOX ─── */
+  .info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .info-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .info-card h4 {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .info-card p, .info-card li {
+    font-size: 13.5px;
+    color: #3a3a32;
+    line-height: 1.7;
+  }
+
+  .info-card ul { padding-left: 16px; }
+
+  /* ─── ORGANISER STRIP ─── */
+  .org-strip {
+    background: var(--forest);
+    color: white;
+    padding: 24px 32px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .org-strip-item {}
+  .org-strip-item .ol { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .org-strip-item .ov { font-size: 13.5px; color: rgba(255,255,255,0.85); }
+
+  /* ─── NOTE ─── */
+  .note {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.45);
+    padding: 30px 56px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  footer strong { color: rgba(255,255,255,0.8); }
+
+  footer a { color: var(--sage); text-decoration: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 700px) {
+    .hero { padding: 48px 24px; }
+    .hero h1 { font-size: 36px; }
+    .wrapper { padding: 40px 20px; }
+    .keynotes-grid { grid-template-columns: 1fr; }
+    .oral-grid { grid-template-columns: 1fr; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: 1fr; }
+    .outcomes-grid { grid-template-columns: 1fr; }
+    .info-row { grid-template-columns: 1fr; }
+    .topbar { padding: 9px 20px; }
+    footer { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>ICEEST 2026 · High-Level Forum · Track A</span>
+  <span>Contact: <a href="mailto:ese@chinacses.org">ese@chinacses.org</a></span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="pill"><span class="pill-dot"></span> Invitation-Only · ~100 Delegates · Conducted in English</div>
+    <div class="hero-eyebrow">ICEEST 2026 High-Level Forum · Track A</div>
+    <h1>Green AI &amp;<br><em>Eco-environmental<br>Advancement</em></h1>
+    <div class="hero-sub">GAEA &nbsp;/ˈdʒiːə/ &nbsp;·&nbsp; /ˈɡeɪə/</div>
+    <div class="hero-name-block">Named for Gaea — primordial goddess of Earth in Greek mythology, embodying the totality of our planetary biosphere.</div>
+    <div class="hero-meta-row">
+      <div class="hm">
+        <div class="hm-label">Date</div>
+        <div class="hm-value">20 September 2026 <span style="font-size:11px; opacity:0.6;">(subject to final confirmation)</span></div>
+      </div>
+      <div class="hm">
+        <div class="hm-label">Morning Session</div>
+        <div class="hm-value">09:00 – 12:00</div>
+      </div>
+      <div class="hm">
+        <div class="hm-label">Venue</div>
+        <div class="hm-value">Shenzhen, China <span style="font-size:11px; opacity:0.6;">(subject to final confirmation)</span></div>
+      </div>
+      <div class="hm">
+        <div class="hm-label">Format</div>
+        <div class="hm-value">Keynote · Oral · Panel · Q&amp;A</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRELIMINARY DISCLAIMER BANNER -->
+<div style="background:#c8a96e; color:#1c3828; text-align:center; padding:10px 40px; font-size:12px; font-weight:500; letter-spacing:0.5px;">
+  ⚑ &nbsp;This is a preliminary announcement. All speaker invitations and programme details remain subject to final confirmation.
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="wrapper">
+
+  <!-- BACKGROUND & VISION -->
+  <div class="section">
+    <div class="section-eyebrow">Background &amp; Vision</div>
+    <h2>The Environmental Reckoning of AI</h2>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">&gt;1,000</div>
+        <div class="stat-desc">Terawatt-hours of projected global data centre electricity consumption in 2026 (IEA estimate)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">~500 mL</div>
+        <div class="stat-desc">Water consumed per 10–50 prompts in a ChatGPT-scale model — a largely invisible "water footprint"</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2×</div>
+        <div class="stat-desc">Rate at which large-model training energy demand has doubled relative to hardware efficiency gains</div>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;">The explosion of large language models and foundation AI systems has transformed data centres into one of the fastest-growing sources of energy demand on the planet. The environmental costs — carbon, water, and thermal — are substantial and under-scrutinised. Yet the very tools driving this demand also offer transformative potential for environmental monitoring, climate modelling, and resource optimisation.</p>
+
+    <div class="pull-quote">
+      <p>"GAEA inverts the usual framing. Rather than asking how AI can help the environment, we begin by asking: what does AI cost the environment — and how do we fix that?"</p>
+    </div>
+
+    <p>Track A of the GAEA forum brings together the world's foremost authorities on sustainable computing to address the full lifecycle environmental impact of AI systems: from chip fabrication and model training, through inference at scale, to hardware end-of-life and circular economy. The session will produce concrete outputs — a science-policy brief and an industry declaration — aimed at establishing internationally harmonised standards for AI energy and environmental reporting.</p>
+
+    <p>The forum also opens a wider horizon. As AI systems grow in capability and societal integration, questions of long-term coexistence between artificial and human intelligence demand the same rigour we bring to ecological resilience. This session will dedicate space to that deeper inquiry — examining alignment, civilisational sustainability, and the philosophical stakes of the AI transition — informed by scholars from computer science, philosophy, and the humanities.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- THEMATIC SCOPE -->
+  <div class="section">
+    <div class="section-eyebrow">Thematic Scope</div>
+    <h2>Track A: Green AI — Topics Covered</h2>
+    <p>The session addresses AI's environmental footprint end-to-end, from the physics of computation to global governance frameworks. Contributions are welcome across the following areas:</p>
+
+    <div class="topics-grid">
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="topic-text"><strong>Full life-cycle assessment</strong> of carbon, water, and thermal footprints associated with large-model training and inference</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="topic-text"><strong>Efficient model architectures</strong>: sparse computation, quantisation, knowledge distillation, and the strategic case for smaller models</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="topic-text"><strong>Software-layer efficiency</strong>: green programming languages, compiler optimisation, and intelligent workload scheduling</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="topic-text"><strong>Environmental impact metrics and reporting standards</strong> for AI algorithms — towards internationally comparable disclosure frameworks</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="topic-text"><strong>Water–energy nexus</strong>: water footprint and regional water stress analysis of data centre cooling technologies (air, liquid, and natural cooling)</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg>
+        </div>
+        <div class="topic-text"><strong>Waste heat and the urban heat island</strong>: contribution of dense compute infrastructure and pathways for waste heat recovery and reuse</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="topic-text"><strong>Circular economy for AI hardware</strong>: sustainable chip and server manufacturing, electronic waste management, and hardware longevity</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="topic-text"><strong>Renewable energy co-planning</strong>: strategic siting of data centres in relation to renewable energy availability and grid constraints</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="topic-text"><strong>Green AI certification</strong>: design and implementation of energy efficiency grading systems, standardised labelling, and regulatory frameworks</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <div class="topic-text"><strong>Carbon border adjustments and compliance</strong>: implications of emerging carbon pricing mechanisms for cross-border AI infrastructure operations</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="topic-text"><strong>Equity and environmental justice</strong>: fairness in AI compute allocation, the global digital divide, and the disproportionate environmental burden on host communities</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="topic-text"><strong>Corporate transparency and accountability</strong>: voluntary and mandatory disclosure of AI environmental impact, and the role of investor and regulatory pressure</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- KEYNOTE SPEAKERS -->
+  <div class="section">
+    <div class="section-eyebrow">Invited Speakers</div>
+    <h2>Keynote Speakers — Track A</h2>
+    <p style="background:#eef5f1; border-left:3px solid #4a9160; padding:12px 18px; font-size:13.5px; color:#1c3828; margin-bottom:20px; max-width:100%;">The following speakers have been invited; final confirmations will be announced in the Second Circular. Detailed speaker assignments and exact timings will be confirmed in the Second Circular.</p>
+
+    <!-- 3 Featured Keynote Cards -->
+    <div class="keynotes-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+      <div class="k-card">
+        <div class="k-role">Featured Keynote</div>
+        <div class="k-name">Emma Strubell</div>
+        <div class="k-affil">Carnegie Mellon University</div>
+        <div class="k-topic">Foundational work systematically quantifying the energy cost of training large NLP models; widely credited with launching the Green AI research agenda.</div>
+      </div>
+
+      <div class="k-card">
+        <div class="k-role">Featured Keynote</div>
+        <div class="k-name">David Patterson</div>
+        <div class="k-affil">UC Berkeley / Google</div>
+        <div class="k-topic">ACM Turing Award laureate; computer architecture pioneer; co-designer of Google's TPU — the world's most widely deployed AI accelerator.</div>
+      </div>
+
+      <div class="k-card gold">
+        <div class="k-role">Featured Keynote</div>
+        <div class="k-name">Max Tegmark</div>
+        <div class="k-affil">MIT / Future of Life Institute</div>
+        <div class="k-topic">Author of <em>Life 3.0</em>; founder, Future of Life Institute; mapping the possible trajectories of life and intelligence in an age of advanced AI — and the conditions for beneficial outcomes.</div>
+      </div>
+
+    </div>
+
+    <!-- All Additional Invited Speakers -->
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--forest); margin:32px 0 10px; font-weight:600;">Additional Invited Speakers <span style="font-size:13px; font-style:italic; font-weight:400; color:var(--muted);">(confirmations pending — Second Circular)</span></h3>
+
+    <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-bottom:28px;">
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">David Rolnick</div>
+        <div style="font-size:11.5px; color:var(--muted);">McGill University / Mila · Co-founder, Climate Change AI (CCAI)</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Shaolei Ren (任少磊)</div>
+        <div style="font-size:11.5px; color:var(--muted);">UC Riverside · AI water footprint authority</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Fengqi You (尤峰崎)</div>
+        <div style="font-size:11.5px; color:var(--muted);">Cornell University · Energy systems &amp; AI data centre footprint</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Partha Ranganathan</div>
+        <div style="font-size:11.5px; color:var(--muted);">Google — VP &amp; Engineering Fellow · Carbon-neutral computing</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Sasha Luccioni</div>
+        <div style="font-size:11.5px; color:var(--muted);">Hugging Face · AI carbon emissions; CodeCarbon co-developer</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Zico Kolter</div>
+        <div style="font-size:11.5px; color:var(--muted);">Carnegie Mellon University · AI efficiency; CMU ML Dept Director</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Jonathan Koomey</div>
+        <div style="font-size:11.5px; color:var(--muted);">Koomey Analytics · Global data centre energy; Koomey's Law</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Vivienne Sze</div>
+        <div style="font-size:11.5px; color:var(--muted);">MIT · Hardware-aware AI; Eyeriss energy-efficient deep learning chip</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Song Han (韩松)</div>
+        <div style="font-size:11.5px; color:var(--muted);">MIT · Model pruning, quantisation &amp; compression pioneer</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Wu-chun Feng</div>
+        <div style="font-size:11.5px; color:var(--muted);">Virginia Tech · Co-founder, Green500 supercomputer rankings</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Tajana Rosing</div>
+        <div style="font-size:11.5px; color:var(--muted);">UC San Diego · Data centre thermal management &amp; workload scheduling</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Babak Falsafi</div>
+        <div style="font-size:11.5px; color:var(--muted);">EPFL · Founder, EcoCloud; sustainable data centre architecture</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Shesha Krishnapura</div>
+        <div style="font-size:11.5px; color:var(--muted);">Intel Fellow · Data centre design; PUE 1.06 achievement</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Satoshi Matsuoka</div>
+        <div style="font-size:11.5px; color:var(--muted);">RIKEN R-CCS · Fugaku supercomputer; Green500 champion</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Eric Brewer</div>
+        <div style="font-size:11.5px; color:var(--muted);">UC Berkeley / Google · Cloud computing; Google 24/7 carbon-free energy</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Santosh Janardhan</div>
+        <div style="font-size:11.5px; color:var(--muted);">Meta · Head of Global Infrastructure</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Bill Carter</div>
+        <div style="font-size:11.5px; color:var(--muted);">Open Compute Project · CTO; liquid cooling &amp; efficient power distribution</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Sam Naffziger</div>
+        <div style="font-size:11.5px; color:var(--muted);">AMD · Energy-efficiency architecture; GPU/CPU performance-per-watt</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Roger Schmidt</div>
+        <div style="font-size:11.5px; color:var(--muted);">IBM Principal Engineer · Electronics &amp; liquid cooling; ASHRAE TC9.9</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Andy Hopper</div>
+        <div style="font-size:11.5px; color:var(--muted);">University of Cambridge · Green computing pioneer; <em>Computing for the Future of the Planet</em></div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Andrew Rice</div>
+        <div style="font-size:11.5px; color:var(--muted);">University of Cambridge · Sustainable IT; software &amp; cloud carbon impact</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Paolo Bertoldi</div>
+        <div style="font-size:11.5px; color:var(--muted);">European Commission JRC · EU Code of Conduct on Data Centre Energy</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Thomas Lamanauskas</div>
+        <div style="font-size:11.5px; color:var(--muted);">ITU — Deputy Secretary-General · Sustainable ICT policy</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Kate Crawford</div>
+        <div style="font-size:11.5px; color:var(--muted);">USC / Microsoft Research · Author, <em>Atlas of AI</em>; AI's resource &amp; environmental costs</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Lisa Jackson</div>
+        <div style="font-size:11.5px; color:var(--muted);">Apple Inc. · VP Environment; Former EPA Administrator</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Pat Gelsinger</div>
+        <div style="font-size:11.5px; color:var(--muted);">General Partner, Playground Global; Former CEO, Intel · Sustainable semiconductor manufacturing</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Yan Da (燕达)</div>
+        <div style="font-size:11.5px; color:var(--muted);">Tsinghua University · HVAC &amp; AI; data centre cooling efficiency</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Zheng Weimin (郑纬民)</div>
+        <div style="font-size:11.5px; color:var(--muted);">Tsinghua University · Member, Chinese Academy of Engineering; HPC &amp; national digital infrastructure</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Wang Huaimin (王怀民)</div>
+        <div style="font-size:11.5px; color:var(--muted);">NUDT · Member, Chinese Academy of Sciences; distributed computing &amp; "East Data, West Compute"</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Stuart Russell</div>
+        <div style="font-size:11.5px; color:var(--muted);">UC Berkeley · AI pioneer; "Provably Beneficial AI"; value alignment</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Yuval Noah Harari</div>
+        <div style="font-size:11.5px; color:var(--muted);">Hebrew University · Author, <em>Sapiens</em> &amp; <em>Homo Deus</em>; AI &amp; human civilisation</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Ilya Sutskever</div>
+        <div style="font-size:11.5px; color:var(--muted);">Safe Superintelligence Inc. · Former Chief Scientist, OpenAI; safe superintelligence</div>
+      </div>
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:14px 16px;">
+        <div style="font-size:13.5px; font-weight:600; color:var(--forest); margin-bottom:2px;">Yi Zeng (曾毅)</div>
+        <div style="font-size:11.5px; color:var(--muted);">CASIA · UN AI Advisory Body; AI ethics &amp; civilisation coexistence</div>
+      </div>
+
+    </div>
+
+    <p class="note">* Gold-bordered cards denote the "AI, Civilisation &amp; Long-term Sustainability" sub-theme. All invitations are pending final confirmation; the confirmed programme will be published in the Second Circular.</p>
+
+    <!-- Selected Oral Presenters -->
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--forest); margin:32px 0 14px; font-weight:600; font-style:italic;">Selected Oral Presenters <span style="font-size:14px; font-weight:400; color:var(--muted);">(pending final confirmation)</span></h3>
+
+    <div class="oral-grid">
+
+      <div class="oral-card">
+        <div class="oral-initials">SH</div>
+        <div class="oral-info">
+          <div class="o-name">Sara Hooker</div>
+          <div class="o-affil">Cohere For AI</div>
+          <div class="o-topic">"Hardware Lottery" — co-evolution of algorithms and hardware; optimising AI systems for the chips that actually exist</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">JD</div>
+        <div class="oral-info">
+          <div class="o-name">Jesse Dodge</div>
+          <div class="o-affil">Allen Institute for AI</div>
+          <div class="o-topic">Defining and measuring Green AI — standardised metrics and reporting methodology</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">KS</div>
+        <div class="oral-info">
+          <div class="o-name">Karin Strauss</div>
+          <div class="o-affil">Microsoft Research</div>
+          <div class="o-topic">DNA storage and sustainable cloud infrastructure — long-horizon approaches to data archival energy</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">CD</div>
+        <div class="oral-info">
+          <div class="o-name">Christina Delimitrou</div>
+          <div class="o-affil">MIT</div>
+          <div class="o-topic">Machine learning for cloud resource management — improving utilisation and reducing idle-power waste</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">AS</div>
+        <div class="oral-info">
+          <div class="o-name">Arman Shehabi</div>
+          <div class="o-affil">Lawrence Berkeley National Laboratory</div>
+          <div class="o-topic">US data centre energy efficiency — lead author of the authoritative DOE national assessment</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">LK</div>
+        <div class="oral-info">
+          <div class="o-name">Lynn Kaack</div>
+          <div class="o-affil">Hertie School, Germany</div>
+          <div class="o-topic">EU AI policy and environmental impact regulation — comparative analysis of emerging national frameworks</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">PD</div>
+        <div class="oral-info">
+          <div class="o-name">Priya Donti</div>
+          <div class="o-affil">MIT</div>
+          <div class="o-topic">Co-founder &amp; Chair, Climate Change AI; AI for electricity grid optimisation and decarbonisation</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">MT</div>
+        <div class="oral-info">
+          <div class="o-name">Maud Texier</div>
+          <div class="o-affil">Google</div>
+          <div class="o-topic">Leading Google's 24/7 carbon-free energy procurement strategy for data centres worldwide</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">PD</div>
+        <div class="oral-info">
+          <div class="o-name">Pierre Delforge</div>
+          <div class="o-affil">NRDC</div>
+          <div class="o-topic">Energy policy and regulation; instrumental in developing California's first data centre efficiency legislation</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">DS</div>
+        <div class="oral-info">
+          <div class="o-name">Dimitrios Skarlatos</div>
+          <div class="o-affil">Carnegie Mellon University</div>
+          <div class="o-topic">GPU-centric operating systems — achieving order-of-magnitude efficiency improvements in memory-intensive AI workloads</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">ZW</div>
+        <div class="oral-info">
+          <div class="o-name">Zhaoyang Wang (王兆阳)</div>
+          <div class="o-affil">Alibaba Cloud</div>
+          <div class="o-topic">Global data centre operations and sustainability strategy at hyperscale — the Alibaba Cloud perspective</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">JL</div>
+        <div class="oral-info">
+          <div class="o-name">Jiaqi Liang (梁家启)</div>
+          <div class="o-affil">Tencent</div>
+          <div class="o-topic">Data centre energy planning and operational sustainability at one of the world's largest technology platforms</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">MM</div>
+        <div class="oral-info">
+          <div class="o-name">Mark Monroe</div>
+          <div class="o-affil">Former Executive Director, The Green Grid</div>
+          <div class="o-topic">PUE evolution and the next generation of holistic data centre efficiency metrics</div>
+        </div>
+      </div>
+
+      <div class="oral-card">
+        <div class="oral-initials">DS</div>
+        <div class="oral-info">
+          <div class="o-name">Dale Sartor</div>
+          <div class="o-affil">Lawrence Berkeley National Laboratory</div>
+          <div class="o-topic">Cooling optimisation and energy management standards for mission-critical computing facilities</div>
+        </div>
+      </div>
+
+    </div>
+    <p class="note" style="margin-top:14px;">* All oral presentation slots are pending final confirmation.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SPEAKER BENEFITS -->
+  <div class="section">
+    <div class="section-eyebrow">Speaker Benefits</div>
+    <h2>Benefits for Invited Speakers</h2>
+    <p>GAEA 2026 is delighted to offer the following benefits to all confirmed invited speakers in recognition of their contribution to the programme.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;">
+
+      <div style="background:var(--paper); border:1px solid var(--border); padding:24px 26px; border-top:3px solid var(--leaf);">
+        <div style="font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--leaf); margin-bottom:10px; font-weight:500;">Keynote &amp; Oral Speakers</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--forest); margin-bottom:14px;">Registration &amp; Accommodation</div>
+        <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px;">
+          <li style="display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:#3a3a32;">
+            <span style="color:var(--leaf); font-size:16px; margin-top:-1px;">✓</span>
+            <span><strong>Complimentary registration</strong> — conference registration fee fully waived for all confirmed keynote and oral speakers</span>
+          </li>
+          <li style="display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:#3a3a32;">
+            <span style="color:var(--leaf); font-size:16px; margin-top:-1px;">✓</span>
+            <span><strong>One night complimentary accommodation</strong> — at the InterContinental Shenzhen or a property of equivalent standard (based on conference nights)</span>
+          </li>
+        </ul>
+      </div>
+
+      <div style="background:var(--forest); border:1px solid var(--border); padding:24px 26px; border-top:3px solid var(--gold);">
+        <div style="font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; font-weight:500;">Keynote Speakers Only</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:white; margin-bottom:14px;">Travel Grant</div>
+        <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px;">
+          <li style="display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:rgba(255,255,255,0.82);">
+            <span style="color:var(--gold); font-size:16px; margin-top:-1px;">✓</span>
+            <span>All of the above benefits, <strong style="color:white;">plus</strong></span>
+          </li>
+          <li style="display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:rgba(255,255,255,0.82);">
+            <span style="color:var(--gold); font-size:16px; margin-top:-1px;">✓</span>
+            <span><strong style="color:white;">Economy-class airfare travel grant</strong> — to support international travel to Shenzhen (subject to organiser confirmation upon acceptance)</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <p class="note" style="margin-top:12px;">* All benefits are subject to formal confirmation upon acceptance of the speaking invitation. Details will be communicated directly to confirmed speakers.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REGISTRATION -->
+  <div class="section">
+    <div class="section-eyebrow">How to Apply</div>
+    <h2>Registration &amp; Key Dates</h2>
+    <p>GAEA 2026 is an invitation-based forum of approximately 100 participants. Researchers wishing to be considered for a speaking slot or to register as a delegate are encouraged to submit their expression of interest via the link below before the deadline.</p>
+
+    <div style="background:var(--forest); padding:28px 32px; margin:20px 0; display:flex; gap:24px; align-items:center; flex-wrap:wrap;">
+      <div style="flex:1; min-width:220px;">
+        <div style="font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Online Registration</div>
+        <div style="font-size:14px; color:rgba(255,255,255,0.7); margin-bottom:14px; line-height:1.5;">Submit your expression of interest via the official form. Open to both invited speakers and prospective delegates.</div>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScaTwsVq9PyBQ4fwlpZJgf9Lv2sj6KZyRTF59q_VdoPy3oOAA/viewform?usp=publish-editor"
+           target="_blank"
+           style="display:inline-block; background:var(--gold); color:var(--forest); font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; text-decoration:none; padding:11px 24px;">
+          Submit Your Application →
+        </a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px; min-width:200px;">
+        <div>
+          <div style="font-size:9.5px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px;">Application Deadline</div>
+          <div style="font-size:17px; color:white; font-family:'Cormorant Garamond',serif; font-weight:600;">31 May 2026</div>
+        </div>
+        <div>
+          <div style="font-size:9.5px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px;">Speaker Notifications</div>
+          <div style="font-size:17px; color:white; font-family:'Cormorant Garamond',serif; font-weight:600;">15 June 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted);">Confirmed keynote and oral speakers will be notified directly by 15 June 2026. For enquiries about the application process, please contact <a href="mailto:ese@chinacses.org" style="color:var(--leaf);">ese@chinacses.org</a>.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EXPECTED OUTCOMES -->
+  <div class="section">
+    <div class="section-eyebrow">Deliverables</div>
+    <h2>Expected Outcomes</h2>
+    <p>GAEA 2026 is designed to generate tangible, lasting outputs beyond the meeting itself.</p>
+
+    <div class="outcomes-grid">
+      <div class="outcome-card">
+        <div class="outcome-num">01</div>
+        <div class="outcome-title">Special Issue — ESE Journal</div>
+        <div class="outcome-desc">A curated special issue in <em>Environmental Science and Ecotechnology</em> will publish selected full papers from GAEA 2026, with invited review articles from leading contributors.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">02</div>
+        <div class="outcome-title">Science-Policy Brief</div>
+        <div class="outcome-desc">A consensus policy brief will be submitted to relevant national authorities, recommending an expansion of data centre efficiency frameworks from PUE alone to an integrated set of metrics encompassing CUE (carbon utilisation efficiency) and WUE (water usage effectiveness).</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">03</div>
+        <div class="outcome-title">Green AI Shenzhen Declaration</div>
+        <div class="outcome-desc">An industry declaration committing signatories to voluntary targets on environmental impact transparency, energy efficiency improvement, and renewable energy adoption. The Declaration is proposed as a candidate deliverable for APEC 2026 (subject to confirmation).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ORGANISERS & CONTACT -->
+  <div class="section">
+    <div class="section-eyebrow">Organisation</div>
+    <h2>Organisers &amp; Contact</h2>
+
+    <div class="org-strip">
+      <div class="org-strip-item">
+        <div class="ol">Lead Organiser</div>
+        <div class="ov">Environmental Science and Ecotechnology (ESE) Journal</div>
+      </div>
+      <div class="org-strip-item">
+        <div class="ol">Co-Organiser (in collaboration with)</div>
+        <div class="ov">Green AI Institute</div>
+      </div>
+      <div class="org-strip-item">
+        <div class="ol">Part of</div>
+        <div class="ov">ICEEST 2026 · Shenzhen</div>
+      </div>
+    </div>
+
+    <div class="info-row" style="margin-top:18px;">
+      <div class="info-card">
+        <h4>General Enquiries</h4>
+        <p>
+          Email: <a href="mailto:ese@chinacses.org" style="color:var(--leaf); font-weight:500;">ese@chinacses.org</a><br><br>
+          Editorial Office<br>
+          No. 54 Hongliannan Village<br>
+          Haidian District, Beijing 100082, China
+        </p>
+      </div>
+      <div class="info-card">
+        <h4>Programme Details</h4>
+        <p>
+          Full speaker confirmations, programme timings, registration details, and venue logistics will be communicated to invited delegates directly and published on the ICEEST 2026 official website.<br><br>
+          <a href="https://www.journals.elsevier.com/environmental-science-and-ecotechnology" style="color:var(--leaf); font-size:13px;">journals.elsevier.com/environmental-science-and-ecotechnology</a>
+        </p>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:18px;">Participation in GAEA is primarily by invitation. Researchers wishing to attend or submit a contribution are encouraged to contact the organising committee at the address above. The working language of all sessions is English.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="background:#c8a96e; color:#1c3828; text-align:center; padding:9px 40px; font-size:11.5px; font-weight:500;">
+  This is a preliminary announcement. All speaker invitations and programme details remain subject to final confirmation.
+</div>
+<footer>
+  <div>
+    <strong>GAEA 2026 · Track A: Green AI</strong><br>
+    Part of ICEEST 2026 · 20 September 2026 · Shenzhen, China
+  </div>
+  <div>
+    Organised by <strong>Environmental Science and Ecotechnology (ESE)</strong> &amp; <strong>Green AI Institute</strong><br>
+    <a href="mailto:ese@chinacses.org">ese@chinacses.org</a>
+  </div>
+</footer>
+
+</body>
+</html>
